@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: emma-agt
+    runtime: node
+    rootDir: naiom-platform
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: OWNED_AGENT
+        value: ecommerce
+      - key: NEXT_PUBLIC_OWNED_AGENT
+        value: ecommerce
