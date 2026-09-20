@@ -52,6 +52,10 @@ Réponds en JSON: {"slides":[{"title":"","body":""}],"caption":"légende engagea
     return `Format : THREAD X (Twitter). 5 à 7 tweets. Tweet 1 = hook fort. Chaque tweet ≤ 270 caractères, autonome. Numérote pas.
 Réponds en JSON: {"tweets":["tweet1","tweet2",...]}.`;
   }
+  if (platform === "twitter" && format === "image") {
+    return `Format : POST X (Twitter) avec VISUEL. "headline" = accroche courte forte qui ira EN GROS sur l'image (≤ 10 mots). "body" = le tweet (≤ 270 caractères, percutant).
+Réponds en JSON: {"headline":"","body":"","hashtags":["#..."]}.${tmpl}`;
+  }
   if (platform === "twitter") {
     return `Format : TWEET unique X (Twitter), ≤ 270 caractères, percutant, un angle fort.
 Réponds en JSON: {"body":"le tweet","hashtags":["#..."]}.`;
@@ -59,10 +63,6 @@ Réponds en JSON: {"body":"le tweet","hashtags":["#..."]}.`;
   if (platform === "linkedin" && format === "image") {
     return `Format : POST LinkedIn IMAGE + texte. "headline" = accroche forte qui ira EN GROS sur le visuel (≤ 12 mots). "body" = le post LinkedIn dans la VOIX de Zeyneb.
 ${LI_VOICE}
-Réponds en JSON: {"headline":"","body":"","hashtags":["#..."]}.${tmpl}`;
-  }
-  if (platform === "twitter" && format === "image") {
-    return `Format : POST X (Twitter) avec VISUEL. "headline" = accroche courte forte qui ira EN GROS sur l'image (≤ 10 mots). "body" = le tweet (≤ 270 caractères, percutant).
 Réponds en JSON: {"headline":"","body":"","hashtags":["#..."]}.${tmpl}`;
   }
   if (platform === "linkedin") {

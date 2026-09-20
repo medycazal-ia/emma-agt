@@ -14,6 +14,8 @@ interface Result {
 }
 interface ContentPost {
   id: string; platform: Platform; format: Format; idea: string; template?: string;
+  tools?: string[];
+  visuals?: { jobs: { index: number; jobId: string }[]; images: (string | null)[]; done: boolean };
   result: Result; status: "draft" | "scheduled" | "posted"; schedule?: { at: string } | null; createdAt: string;
 }
 
@@ -118,7 +120,7 @@ function PlatformPanel({ platform, saved, onSaved }: { platform: Platform; saved
   const [idea, setIdea] = useState(saved?.idea ?? "");
   const [tmpl, setTmpl] = useState<Tmpl>(tmplByName(saved?.template));
   const [refTpl, setRefTpl] = useState<string | null>(REF_TEMPLATES[platform]?.[0]?.id ?? null);
-  const [tools, setTools] = useState<string>((saved as { tools?: string[] })?.tools?.join(", ") ?? "");
+  const [tools, setTools] = useState<string>(saved?.tools?.join(", ") ?? "");
   const [res, setRes] = useState<Result | null>(saved?.result ?? null);
   const [currentId, setCurrentId] = useState<string | null>(saved?.id ?? null);
   const [err, setErr] = useState<string | null>(null);

@@ -17,10 +17,12 @@ export async function POST(req: Request) {
     // TOUS les carrousels Instagram → rendu HTML éducatif (JAMAIS Higgsfield)
     if (platform === "instagram" && format === "carousel") {
       const t1 = await generateType1(idea.trim(), tools ?? []);
-      const arr = (v: unknown) => (Array.isArray(v) ? v.map(String) : []);
       const result: ContentResult = {
         platform, format,
-        slides: t1.slides.map((s) => ({ title: String(s.title ?? ""), body: s.sub ?? (arr(s.bullets).join(" · ") || arr(s.card).join(" ")) })),
+        slides: t1.slides.map((s) => ({
+          title: String(s.title ?? ""),
+          body: s.sub ?? ((s.bullets?.length ? s.bullets.map((b) => b.text).join(" · ") : "") || s.para || ""),
+        })),
         caption: `${idea.trim()} 👇`,
         hashtags: [],
       };
