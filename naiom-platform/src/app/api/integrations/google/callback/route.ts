@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { exchangeCodeForTokens, saveTokens } from "@/lib/integrations/google";
+import { publicOrigin } from "@/lib/http";
 
 export const runtime = "nodejs";
 
@@ -9,28 +10,29 @@ export const runtime = "nodejs";
  */
 export async function GET(req: Request) {
   const url = new URL(req.url);
+  const origin = publicOrigin(req);
   const code = url.searchParams.get("code");
   const oauthError = url.searchParams.get("error");
 
   if (oauthError) {
     return NextResponse.redirect(
-      new URL(`/settings?google_error=${encodeURIComponent(oauthError)}`, req.url)
+      new URL(`/settings?google_error=${encodeURIComponent(oauthError)}`, origin)
     );
   }
   if (!code) {
     return NextResponse.redirect(
-      new URL("/settings?google_error=missing_code", req.url)
+      new URL("/settings?google_error=missing_code", origin)
     );
   }
 
   try {
     const tokens = await exchangeCodeForTokens(code);
     await saveTokens(tokens);
-    return NextResponse.redirect(new URL("/settings?google=connected", req.url));
+    return NextResponse.redirect(new URL("/settings?google=connected", origin));
   } catch (err) {
     const msg = err instanceof Error ? err.message : "exchange_failed";
     return NextResponse.redirect(
-      new URL(`/settings?google_error=${encodeURIComponent(msg)}`, req.url)
+      new URL(`/settings?google_error=${encodeURIComponent(msg)}`, origin)
     );
   }
 }

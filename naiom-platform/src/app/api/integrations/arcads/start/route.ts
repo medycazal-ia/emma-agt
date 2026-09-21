@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { buildArcadsAuthUrl } from "@/lib/integrations/arcadsMcp";
+import { publicOrigin } from "@/lib/http";
 
 export const runtime = "nodejs";
 
@@ -9,7 +10,7 @@ export const runtime = "nodejs";
  */
 export async function GET(req: Request) {
   try {
-    const origin = new URL(req.url).origin;
+    const origin = publicOrigin(req);
     const authUrl = await buildArcadsAuthUrl(origin);
     return NextResponse.redirect(authUrl);
   } catch (err) {
